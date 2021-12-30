@@ -67,7 +67,7 @@ func (am *AmqpClient) listner() {
 				var p = new(produceData)
 				err := json.Unmarshal(am.msgIn, &p)
 				if err != nil {
-					am.processAndSend(am.msgIn, "ASYNC")
+					am.processAndSend(string(am.msgIn), "ASYNC")
 					am.msgIn = nil
 				}
 				// else if p.Source == "API" {
@@ -171,12 +171,12 @@ retry:
 	return nil
 }
 
-func (am *AmqpClient) processAndSend(out1 []byte, source string) (out4 string) {
+func (am *AmqpClient) processAndSend(out1, source string) (out4 string) {
 	//do spme process or conversion
 	out2 := am.Process(out1)
 	fmt.Println("OUT2", out2)
 	// logType=INFO, direction=OUT
-	out3 := am.LogMessageAfterProcess(out2.Name, source)
+	out3 := am.LogMessageAfterProcess(out2, source)
 	fmt.Println("OUT3", out3)
 
 	//come here

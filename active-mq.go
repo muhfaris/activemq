@@ -3,6 +3,7 @@ package activemq
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -128,26 +129,15 @@ func (am *AmqpClient) LogMessageAfterProcess(msg, source string) (rsp string) {
 
 }
 
-type ProcessConversion struct {
-	Name    string
-	Payload []byte
-}
-
-func (am *AmqpClient) Process(data []byte) *ProcessConversion {
-	var processConversion ProcessConversion
-	if err := json.Unmarshal(data, &processConversion); err != nil {
-		return nil
-	}
-
+func (am *AmqpClient) Process(inp1 string) (out2 string) {
 	logData.Info(200, "(CONVERSION) processing "+am.Channels[0]+" data")
 	logData.WriteToLog()
 	if am.Custom {
-		resp := am.Processor(processConversion.Name)
-		return &ProcessConversion{Name: resp}
+		return am.Processor(inp1)
 	}
 
 	//Default Logic
-	return &processConversion
+	return strings.ToUpper(inp1)
 }
 
 func (am *AmqpClient) Send(inp2 string) (out4 string) {

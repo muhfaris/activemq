@@ -47,6 +47,6 @@ type IAmqpClient interface {
 	Connect()
 	LogMessageBeforeProcess(msg, source string) (rsp string)
 	LogMessageAfterProcess(msg, source string) (rsp string)
-	Process(data []byte) *ProcessConversion
+	Process(inp1 string) (out2 string)
 	Send(msg string) string
 }
